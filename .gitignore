@@ -1,0 +1,23 @@
+# Logs
+logs
+
+# Runtime data
+*.pid
+
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+
+# Project
+.idea
+
+# Misc
+examples/
+
+# macOS
+.DS_Store
+
+# Build
+dist/

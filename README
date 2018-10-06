@@ -1,0 +1,11 @@
+
+# Run in dev mode:
+npm start
+
+
+# Build into ./dist:
+npx webpack
+
+# Verify dist with:
+python -m http.server 8000 --directory ./dist
+

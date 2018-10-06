@@ -1,7 +1,10 @@
+'use strict';
+
 import 'pixi.js';
 import loadResources from "./loader";
+import './drawing';
+import {BoardDrawing} from "./drawing";
 
-'use strict';
 
 
 Promise.resolve(setup())
@@ -19,7 +22,7 @@ async function setup() {
 
     let resources = await loadResources();
 
-    testApp(app, resources);
+    testApp(app);
 }
 
 function createApp() {
@@ -38,10 +41,8 @@ function createApp() {
 }
 
 // Setup creates the app
-function testApp(app, resources) {
-	let cat = new PIXI.Sprite(resources["images/cat.png"].texture);
-
-	//Add the cat to the stage
-	app.stage.addChild(cat);
+function testApp(app) {
+	let board = new BoardDrawing(app);
+	board.setup();
 }
 

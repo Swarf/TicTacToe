@@ -16,11 +16,9 @@ Promise.resolve(setup())
 
 async function setup() {
     let app = createApp();
-    console.log(document);
-    console.log(document.body);
     document.body.appendChild(app.view);
 
-    let resources = await loadResources();
+    // let resources = await loadResources();
 
     testApp(app);
 }
@@ -42,7 +40,7 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-	let board = new BoardDrawing(app);
+	let board = new BoardDrawing(app.stage);
 	board.setup();
 }
 

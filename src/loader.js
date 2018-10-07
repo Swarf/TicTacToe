@@ -12,7 +12,7 @@ loader.onProgress.add((loader, resource) => {
 async function loadAll() {
     return new Promise((resolve, reject) => {
         loader
-            .add("images/cat.png")
+            // .add("images/cat.png")
             .load(resolve);
 
         loader.onError.add(reject);

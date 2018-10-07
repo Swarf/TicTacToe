@@ -6,8 +6,8 @@ let Point = PIXI.Point;
 
 
 export class BoardDrawing {
-    constructor(stage) {
-        this.stage = stage;
+    constructor(container) {
+        this.container = container;
     }
 
     setup() {
@@ -38,7 +38,7 @@ export class BoardDrawing {
         blurFilter.blur = blur;
         graphic.filters = [blurFilter];
 
-        this.stage.addChild(graphic);
+        this.container.addChild(graphic);
         return graphic;
     }
 

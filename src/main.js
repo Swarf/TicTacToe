@@ -40,7 +40,11 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-	let board = new BoardDrawing(app.stage);
+    let playArea = new PIXI.Container();
+    playArea.position.set(0, 50);
+	let board = new BoardDrawing(playArea);
+
+	app.stage.addChild(playArea);
 	board.setup();
 }
 

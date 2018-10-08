@@ -5,7 +5,7 @@ let Graphics = PIXI.Graphics;
 let Point = PIXI.Point;
 
 
-export class BoardDrawing {
+export class PlayArea {
     constructor(container) {
         this.container = container;
 
@@ -18,7 +18,7 @@ export class BoardDrawing {
 
     setup() {
         let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
-        BoardDrawing.drawGrid(bigBoard, this.gridSize, this.gridPadding);
+        PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
 
         let smallBoards = this.makeGraphic(2, 0x555555, 0.0);
 
@@ -27,7 +27,7 @@ export class BoardDrawing {
             for (let j = 0; j < 3; j++) {
                 offset.x = this.gridPadding + (this.gridSize / 3) * i;
                 offset.y = this.gridPadding + (this.gridSize / 3) * j;
-                BoardDrawing.drawGrid(smallBoards, this.smallGridSize, this.smallGridPadding, offset);
+                PlayArea.drawGrid(smallBoards, this.smallGridSize, this.smallGridPadding, offset);
             }
         }
     }

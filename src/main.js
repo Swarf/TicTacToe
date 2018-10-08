@@ -2,8 +2,8 @@
 
 import 'pixi.js';
 import loadResources from "./loader";
-import './drawing';
-import {BoardDrawing} from "./drawing";
+import './play_area';
+import {PlayArea} from "./play_area";
 
 
 
@@ -42,7 +42,7 @@ function createApp() {
 function testApp(app) {
     let playArea = new PIXI.Container();
     playArea.position.set(0, 50);
-	let board = new BoardDrawing(playArea);
+	let board = new PlayArea(playArea);
 
 	app.stage.addChild(playArea);
 	board.setup();

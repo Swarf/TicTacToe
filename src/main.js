@@ -4,6 +4,7 @@ import 'pixi.js';
 import loadResources from "./loader";
 import './play_area';
 import {PlayArea} from "./play_area";
+import {PlayInput} from "./play_input";
 
 
 
@@ -40,11 +41,13 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-    let playArea = new PIXI.Container();
-    playArea.position.set(0, 50);
-	let board = new PlayArea(playArea);
+    let gameViewPort = new PIXI.Container();
+    gameViewPort.position.set(0, 50);
+	let gameBoard = new PlayArea(gameViewPort);
 
-	app.stage.addChild(playArea);
-	board.setup();
+    let playInput = new PlayInput(gameBoard, gameViewPort);
+
+    app.stage.addChild(gameViewPort);
+	gameBoard.setup();
 }
 

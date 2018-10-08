@@ -10,7 +10,7 @@ export class PlayArea {
         this.container = container;
 
         this.gridSize = 480;
-        this.gridPadding = 50;
+        this.gridPadding = 30;
 
         this.smallGridSize = this.gridSize / 4;  // One third of bigger grid is space for small grid, use 3/4ths of that
         this.smallGridPadding = (this.gridSize / 3 - this.smallGridSize) / 2;
@@ -63,7 +63,7 @@ export class PlayArea {
     }
 
     squareForCoords(point) {
-        point = pointDelta(a, {x: this.gridPadding, y: this.gridPadding});
+        point = pointDelta(point, {x: this.gridPadding, y: this.gridPadding});
         let big = false;
         let small = false;
 
@@ -73,7 +73,17 @@ export class PlayArea {
                 Math.floor(point.y * 3 / this.gridSize)
             );
 
+            point = pointDelta(point, {
+                x: this.gridSize / 3 * big.x + this.smallGridPadding,
+                y: this.gridSize / 3 * big.y + this.smallGridPadding
+            });
 
+            if (point.x >= 0 && point.x < this.smallGridSize && point.y >= 0 && point.y < this.smallGridSize) {
+                small = new Point(
+                    Math.floor(point.x * 3 / this.smallGridSize),
+                    Math.floor(point.y * 3 / this.smallGridSize)
+                );
+            }
         }
 
         return {big: big, small: small};

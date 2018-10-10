@@ -63,8 +63,8 @@ export class PlayArea extends PIXI.Container {
         }
     }
 
-    squareForCoords(point) {
-        point = pointDelta(point, {x: this.gridPadding, y: this.gridPadding});
+    squareForEvent(event) {
+        let point = pointDelta(event.data.getLocalPosition(this), {x: this.gridPadding, y: this.gridPadding});
         let big = false;
         let small = false;
 

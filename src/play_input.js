@@ -13,7 +13,7 @@ export class PlayInput {
     }
 
     checkMousePosition(event) {
-        let gridPos = this.playArea.squareForCoords(event.data.getLocalPosition(this.viewPort));
+        let gridPos = this.playArea.squareForEvent(event);
         if (!_.isEqual(gridPos, this.currentGridPos)) {
             this.currentGridPos = gridPos;
             console.log(gridPos);

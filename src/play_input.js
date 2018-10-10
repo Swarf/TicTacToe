@@ -3,14 +3,13 @@ import 'lodash/core';
 
 
 export class PlayInput {
-    constructor(gameBoard, viewPort) {
+    constructor(gameBoard) {
 
         this.playArea = gameBoard;
-        this.viewPort = viewPort;
         this.currentGridPos = null;
 
-        viewPort.interactive = true;
-        viewPort.on("mousemove", (event) => {this.checkMousePosition(event)});
+        gameBoard.interactive = true;
+        gameBoard.on("mousemove", (event) => {this.checkMousePosition(event)});
     }
 
     checkMousePosition(event) {

@@ -1,13 +1,14 @@
 import 'pixi.js';
 import {filters} from "pixi.js";
 
+
 let Graphics = PIXI.Graphics;
 let Point = PIXI.Point;
 
 
-export class PlayArea {
-    constructor(container) {
-        this.container = container;
+export class PlayArea extends PIXI.Container {
+    constructor() {
+        super();
 
         this.gridSize = 480;
         this.gridPadding = 30;
@@ -40,7 +41,7 @@ export class PlayArea {
         blurFilter.blur = blur;
         graphic.filters = [blurFilter];
 
-        this.container.addChild(graphic);
+        this.addChild(graphic);
         return graphic;
     }
 

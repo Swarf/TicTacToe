@@ -1,11 +1,9 @@
 'use strict';
 
 import 'pixi.js';
-import loadResources from "./loader";
-import './play_area';
 import {PlayArea} from "./play_area";
 import {PlayInput} from "./play_input";
-
+import {loadGameSprite} from "./loader";
 
 
 Promise.resolve(setup())
@@ -41,13 +39,20 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-    let gameViewPort = new PIXI.Container();
-    gameViewPort.position.set(0, 50);
-	let gameBoard = new PlayArea(gameViewPort);
+	let gameBoard = new PlayArea();
+	gameBoard.position.set(0, 50);
 
-    let playInput = new PlayInput(gameBoard, gameViewPort);
+    let playInput = new PlayInput(gameBoard);
 
-    app.stage.addChild(gameViewPort);
+    app.stage.addChild(gameBoard);
 	gameBoard.setup();
+
+	let oSprite = loadGameSprite('O');
+    oSprite.position.set(70, 120);
+	app.stage.addChild(oSprite);
+
+	let xSprite = loadGameSprite('X');
+    xSprite.position.set(110, 160);
+	app.stage.addChild(xSprite);
 }
 

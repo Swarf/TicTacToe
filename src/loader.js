@@ -38,12 +38,12 @@ function loadTextures() {
     let textures = {};
 
     let oGraphic = new Graphics();
-    oGraphic.lineStyle(3, 0xFF0000);
+    oGraphic.lineStyle(4, 0xFF0000);
     oGraphic.drawCircle(0, 0, 12);
     textures['O'] = oGraphic.generateCanvasTexture(0);
 
     let xGraphic = new Graphics();
-    xGraphic.lineStyle(3, 0x0000FF);
+    xGraphic.lineStyle(4, 0x0000FF);
     xGraphic.moveTo(-12, -12);
     xGraphic.lineTo(12, 12);
     xGraphic.moveTo(12, -12);

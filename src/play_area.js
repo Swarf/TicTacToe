@@ -1,5 +1,6 @@
 import 'pixi.js';
 import {filters} from "pixi.js";
+import {loadGameSprite} from "./loader";
 
 
 let Graphics = PIXI.Graphics;
@@ -15,6 +16,8 @@ export class PlayArea extends PIXI.Container {
 
         this.smallGridSize = this.gridSize / 4;  // One third of bigger grid is space for small grid, use 3/4ths of that
         this.smallGridPadding = (this.gridSize / 3 - this.smallGridSize) / 2;
+
+        this.hoverSprite = null;
     }
 
     setup() {
@@ -88,6 +91,32 @@ export class PlayArea extends PIXI.Container {
         }
 
         return {big: big, small: small};
+    }
+
+    hoverSelection(shape, gridPos) {
+        if (this.hoverSprite) {
+            this.removeHover();
+        }
+
+        let sprite = loadGameSprite(shape);
+        sprite.position.set(
+            this.smallCenterOffset(gridPos.big.x, gridPos.small.x),
+            this.smallCenterOffset(gridPos.big.y, gridPos.small.y)
+        );
+        this.hoverSprite = sprite;
+        this.addChild(sprite);
+    }
+
+    removeHover() {
+        if (this.hoverSprite) {
+            this.removeChild(this.hoverSprite);
+            this.hoverSprite = null;
+        }
+    }
+
+    smallCenterOffset(big, small) {
+        let bigOffset = this.gridPadding + this.gridSize * big / 3;
+        return bigOffset + this.smallGridPadding + this.smallGridSize * (0.5 + small) / 3;
     }
 }
 

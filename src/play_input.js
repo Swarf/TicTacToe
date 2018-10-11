@@ -17,6 +17,12 @@ export class PlayInput {
         if (!_.isEqual(gridPos, this.currentGridPos)) {
             this.currentGridPos = gridPos;
             console.log(gridPos);
+
+            if (gridPos.small) {
+                this.playArea.hoverSelection('X', gridPos);
+            } else {
+                this.playArea.removeHover();
+            }
         }
     }
 }

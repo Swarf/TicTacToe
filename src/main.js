@@ -3,7 +3,6 @@
 import 'pixi.js';
 import {PlayArea} from "./play_area";
 import {PlayInput} from "./play_input";
-import {loadGameSprite} from "./loader";
 
 
 Promise.resolve(setup())
@@ -46,13 +45,4 @@ function testApp(app) {
 
     app.stage.addChild(gameBoard);
 	gameBoard.setup();
-
-	let oSprite = loadGameSprite('O');
-    oSprite.position.set(70, 120);
-	app.stage.addChild(oSprite);
-
-	let xSprite = loadGameSprite('X');
-    xSprite.position.set(110, 160);
-	app.stage.addChild(xSprite);
 }
-

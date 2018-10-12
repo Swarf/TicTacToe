@@ -3,6 +3,7 @@
 import 'pixi.js';
 import {PlayArea} from "./play_area";
 import {PlayInput} from "./play_input";
+import {GameBoard} from "./game_board";
 
 
 Promise.resolve(setup())
@@ -38,11 +39,12 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-	let gameBoard = new PlayArea();
-	gameBoard.position.set(0, 50);
+	let playView = new PlayArea();
+	playView.position.set(0, 50);
 
-    let playInput = new PlayInput(gameBoard);
+	let gameBoard = new GameBoard();
+    let playInput = new PlayInput(playView, gameBoard);
 
-    app.stage.addChild(gameBoard);
-	gameBoard.setup();
+    app.stage.addChild(playView);
+	playView.setup();
 }

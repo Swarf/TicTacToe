@@ -105,6 +105,7 @@ export class PlayArea extends PIXI.Container {
         );
         this.hoverSprite = sprite;
         this.addChild(sprite);
+        return sprite;
     }
 
     removeHover() {
@@ -117,6 +118,16 @@ export class PlayArea extends PIXI.Container {
     smallCenterOffset(big, small) {
         let bigOffset = this.gridPadding + this.gridSize * big / 3;
         return bigOffset + this.smallGridPadding + this.smallGridSize * (0.5 + small) / 3;
+    }
+
+    place(shape, gridPos) {
+        let sprite = loadGameSprite(shape);
+        sprite.position.set(
+            this.smallCenterOffset(gridPos.big.x, gridPos.small.x),
+            this.smallCenterOffset(gridPos.big.y, gridPos.small.y)
+        );
+
+        this.addChild(sprite);
     }
 }
 

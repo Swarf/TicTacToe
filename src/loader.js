@@ -43,7 +43,7 @@ function loadTextures() {
     textures['O'] = oGraphic.generateCanvasTexture(0);
 
     let xGraphic = new Graphics();
-    xGraphic.lineStyle(4, 0x0000FF);
+    xGraphic.lineStyle(4, 0x4444FF, 1.0);
     xGraphic.moveTo(-12, -12);
     xGraphic.lineTo(12, 12);
     xGraphic.moveTo(12, -12);

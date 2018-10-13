@@ -17,7 +17,6 @@ export class PlayInput {
         let gridPos = this.playView.squareForEvent(event);
         if (!_.isEqual(gridPos, this.currentGridPos)) {
             this.currentGridPos = gridPos;
-            console.log(gridPos);
 
             if (gridPos.small && this.gameBoard.isAllowed(...view2board(gridPos))) {
                 let sprite = this.playView.hoverSelection(this.gameBoard.atBat, gridPos);

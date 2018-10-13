@@ -107,7 +107,6 @@ export class PlayArea extends PIXI.Container {
 
         let lb = sprite.getLocalBounds();
         let hitPadding = this.smallGridSize / 3 - lb.width;
-        console.log(lb.width, lb.height);
         sprite.hitArea = new PIXI.Rectangle(
             lb.x - hitPadding,
             lb.y - hitPadding,

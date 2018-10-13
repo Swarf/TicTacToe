@@ -37,18 +37,30 @@ export function loadGameSprite(spriteName) {
 function loadTextures() {
     let textures = {};
 
-    let oGraphic = new Graphics();
-    oGraphic.lineStyle(4, 0xFF0000);
-    oGraphic.drawCircle(0, 0, 12);
-    textures['O'] = oGraphic.generateCanvasTexture(0);
-
-    let xGraphic = new Graphics();
-    xGraphic.lineStyle(4, 0x4444FF, 1.0);
-    xGraphic.moveTo(-12, -12);
-    xGraphic.lineTo(12, 12);
-    xGraphic.moveTo(12, -12);
-    xGraphic.lineTo(-12, 12);
-    textures['X'] = xGraphic.generateCanvasTexture(0);
-
+    textures['O'] = makeTexture('O', 12, 4, 0xFF0000);
+    textures['O:hover'] = makeTexture('O', 12, 4, 0xFF5555);
+    textures['X'] = makeTexture('X', 12, 4, 0x0000FF);
+    textures['X:hover'] = makeTexture('X', 12, 4, 0x5555FF);
     return textures;
+}
+
+function makeTexture(shape, radius, lineWeight, color, alpha=1.0) {
+    let graphic = new Graphics();
+    graphic.lineStyle(lineWeight, color, alpha);
+
+    switch (shape) {
+        case 'O':
+            graphic.drawCircle(0, 0, radius);
+            break;
+        case 'X':
+            graphic.moveTo(-radius, -radius);
+            graphic.lineTo(radius, radius);
+            graphic.moveTo(radius, -radius);
+            graphic.lineTo(-radius, radius);
+            break;
+        default:
+            throw new Error('Unknown tic tac toe shape: ' + shape);
+    }
+
+    return graphic.generateCanvasTexture(0);
 }

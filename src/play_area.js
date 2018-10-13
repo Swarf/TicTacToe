@@ -98,7 +98,7 @@ export class PlayArea extends PIXI.Container {
             this.removeHover();
         }
 
-        let sprite = loadGameSprite(shape);
+        let sprite = loadGameSprite(shape + ':hover');
         sprite.position.set(
             this.smallCenterOffset(gridPos.big.x, gridPos.small.x),
             this.smallCenterOffset(gridPos.big.y, gridPos.small.y)

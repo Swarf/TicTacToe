@@ -104,6 +104,17 @@ export class PlayArea extends PIXI.Container {
             this.smallCenterOffset(gridPos.big.y, gridPos.small.y)
         );
         this.hoverSprite = sprite;
+
+        let lb = sprite.getLocalBounds();
+        let hitPadding = this.smallGridSize / 3 - lb.width;
+        console.log(lb.width, lb.height);
+        sprite.hitArea = new PIXI.Rectangle(
+            lb.x - hitPadding,
+            lb.y - hitPadding,
+            lb.width + hitPadding * 2,
+            lb.height + hitPadding * 2
+        );
+
         this.addChild(sprite);
         return sprite;
     }

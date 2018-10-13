@@ -2,8 +2,9 @@ import 'pixi.js';
 import 'lodash/core';
 
 
-let loader = new PIXI.loaders.Loader();
-let Graphics = PIXI.Graphics;
+const loader = new PIXI.loaders.Loader();
+const Graphics = PIXI.Graphics;
+const Sprite = PIXI.Sprite;
 const textures = loadTextures();
 
 loader.onProgress.add((loader, resource) => {
@@ -28,7 +29,7 @@ export default async function loadResources() {
 }
 
 export function loadGameSprite(spriteName) {
-    let sprite = new PIXI.Sprite(textures[spriteName]);
+    let sprite = new Sprite(textures[spriteName]);
     sprite.anchor.x = 0.5;
     sprite.anchor.y = 0.5;
     return sprite;

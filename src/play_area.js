@@ -9,8 +9,9 @@ const Point = PIXI.Point;
 
 
 export class PlayArea extends Container {
-    constructor() {
+    constructor(app) {
         super();
+        this.app = app;
 
         this.gridSize = 480;
         this.gridPadding = 30;

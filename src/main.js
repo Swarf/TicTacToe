@@ -1,6 +1,7 @@
 'use strict';
 
 import 'pixi.js';
+import loadResources from "./loader";
 import {PlayArea} from "./play_area";
 import {PlayInput} from "./play_input";
 import {GameBoard} from "./game_board";
@@ -17,8 +18,7 @@ async function setup() {
     let app = createApp();
     document.body.appendChild(app.view);
 
-    // let resources = await loadResources();
-
+    let resources = await loadResources(app);
     testApp(app);
 }
 
@@ -39,7 +39,7 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-	let playView = new PlayArea();
+	let playView = new PlayArea(app);
 	playView.position.set(0, 50);
 
 	let gameBoard = new GameBoard();

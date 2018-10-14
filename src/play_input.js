@@ -29,9 +29,17 @@ export class PlayInput {
     }
 
     takeMove(player, gridPos) {
-        this.gameBoard.place(player, ...view2board(gridPos));
+        let outcome = this.gameBoard.place(player, ...view2board(gridPos));
         this.playView.removeHover();
         this.playView.place(player, gridPos);
+
+        if (outcome.board) {
+            let gridPos = {big: board2viewPoint(outcome.board.position)};
+            let winningSquares = outcome.board.squares.map(square => (
+                {big: gridPos.big, small: board2viewPoint(square)}
+            ));
+            this.playView.markSolved(player, gridPos, winningSquares);
+        }
     }
 }
 

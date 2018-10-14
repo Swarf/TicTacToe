@@ -3,11 +3,12 @@ import {filters} from "pixi.js";
 import {loadGameSprite} from "./loader";
 
 
-let Graphics = PIXI.Graphics;
-let Point = PIXI.Point;
+const Container = PIXI.Container;
+const Graphics = PIXI.Graphics;
+const Point = PIXI.Point;
 
 
-export class PlayArea extends PIXI.Container {
+export class PlayArea extends Container {
     constructor() {
         super();
 
@@ -18,6 +19,9 @@ export class PlayArea extends PIXI.Container {
         this.smallGridPadding = (this.gridSize / 3 - this.smallGridSize) / 2;
 
         this.hoverSprite = null;
+        this.hoverLine = null;
+
+        this.playHintLayer = new Container();
     }
 
     setup() {
@@ -114,6 +118,8 @@ export class PlayArea extends PIXI.Container {
             lb.height + hitPadding * 2
         );
 
+        // TODO add hover line in for possible completed line
+
         this.addChild(sprite);
         return sprite;
     }
@@ -122,12 +128,12 @@ export class PlayArea extends PIXI.Container {
         if (this.hoverSprite) {
             this.removeChild(this.hoverSprite);
             this.hoverSprite = null;
-        }
-    }
 
-    smallCenterOffset(big, small) {
-        let bigOffset = this.gridPadding + this.gridSize * big / 3;
-        return bigOffset + this.smallGridPadding + this.smallGridSize * (0.5 + small) / 3;
+            if (this.hoverLine) {
+                this.removeChild(this.hoverLine);
+                this.hoverLine = null;
+            }
+        }
     }
 
     place(shape, gridPos) {
@@ -139,9 +145,49 @@ export class PlayArea extends PIXI.Container {
 
         this.addChild(sprite);
     }
+
+    markSolved(shape, gridPos, winningSquares) {
+        let bigSprite = loadGameSprite(shape + ':big');
+        bigSprite.position.set(
+            this.smallCenterOffset(gridPos.big.x, 1),
+            this.smallCenterOffset(gridPos.big.y, 1)
+        );
+
+        this.addChild(bigSprite);
+        console.log(winningSquares);
+    }
+
+    smallCenterOffset(big, small) {
+        let bigOffset = this.gridPadding + this.gridSize * big / 3;
+        return bigOffset + this.smallGridPadding + this.smallGridSize * (0.5 + small) / 3;
+    }
+
+    winningLinePoints(squareA, squareB) {
+        let pointA = new Point(
+            this.smallCenterOffset(squareA.big.x, squareA.small.x),
+            this.smallCenterOffset(squareA.big.y, squareA.small.y)
+        );
+
+        let pointB = new Point(
+            this.smallCenterOffset(squareB.big.x, squareB.small.x),
+            this.smallCenterOffset(squareB.big.y, squareB.small.y)
+        );
+
+        let delta = pointDelta(pointA, pointB);
+        pointA.set(pointA.x + delta); // TODO finish
+
+        return {
+            from: pointA,
+            to: pointB
+        }
+    }
 }
 
-// TODO: Monkey patch into PIXI.Point?
+// TODO: Monkey patch these two into PIXI.Point?
 function pointDelta(a, b) {
     return new Point(a.x - b.x, a.y - b.y);
+}
+
+function pointDistance(a, b) {
+    return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }

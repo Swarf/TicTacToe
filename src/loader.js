@@ -38,20 +38,26 @@ export function loadGameSprite(spriteName) {
 function loadTextures() {
     let textures = {};
 
-    textures['O'] = makeTexture('O', 12, 4, 0xFF0000);
-    textures['O:hover'] = makeTexture('O', 12, 4, 0xFF5555);
-    textures['X'] = makeTexture('X', 12, 4, 0x0000FF);
-    textures['X:hover'] = makeTexture('X', 12, 4, 0x5555FF);
+    let red = 0xB5512D;
+    let blue = 0x2D91B5;
+    let lighten = 0x202020;
+
+    textures['O'] = makeTexture('O', 7, 6, red);
+    textures['X'] = makeTexture('X', 12, 7, blue);
+    textures['O:hover'] = makeTexture('O', 7, 6, red | lighten);
+    textures['X:hover'] = makeTexture('X', 12, 7, blue | lighten);
+    textures['O:big'] = makeTexture('O', 35, 12, red);
+    textures['X:big'] = makeTexture('X', 35, 15, blue);
     return textures;
 }
 
 function makeTexture(shape, radius, lineWeight, color, alpha=1.0) {
     let graphic = new Graphics();
-    graphic.lineStyle(lineWeight, color, alpha);
+    graphic.lineStyle(lineWeight, color, alpha, 0);
 
     switch (shape) {
         case 'O':
-            graphic.drawCircle(0, 0, radius);
+            graphic.drawCircle(0, 0, radius + lineWeight);
             break;
         case 'X':
             graphic.moveTo(-radius, -radius);

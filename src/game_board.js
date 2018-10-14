@@ -38,7 +38,6 @@ export class GameBoard {
 
     place(player, bigPos, smallPos) {
         let boardWin = false;
-        let gameWin = false;
 
         if (!this.isAllowed(bigPos, smallPos)) {
             throw new Error(`GameBoard.place - position not allowed: ${bigPos},${smallPos}`);
@@ -56,7 +55,10 @@ export class GameBoard {
             let smallWin = this.checkForWin(player, this.grid[bigPos]);
             if (smallWin) {
                 this.outcomes[bigPos] = player;
-                boardWin = bigPos;
+                boardWin = {
+                    position: bigPos,
+                    squares: smallWin
+                };
             }
         }
 
@@ -76,10 +78,9 @@ export class GameBoard {
         // TODO check for tie game
 
         // Evaluate whether the this action has won the game
-        gameWin = this.checkForWin(player, this.outcomes);
 
         return {
-            game: gameWin,
+            game: this.checkForWin(player, this.outcomes),
             board: boardWin,
             nextPlayer: this.atBat,
             nextBoards: this.nextTurnBoards

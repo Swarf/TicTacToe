@@ -35,6 +35,10 @@ export const color = {
     'O': 0xB5512D, // orange-ish
     'X': 0x2D91B5  // blue-ish
 };
+const colorDark = {
+    'O': 0xA64B29,
+    'X': 0x247491
+};
 const weightO = 6;
 const weightX = 7;
 const winLineLength = 57;
@@ -60,8 +64,8 @@ function loadTextures() {
 
     textures['O'] = makeTexture('O', 12, weightO, color['O']);
     textures['X'] = makeTexture('X', 12, weightX, color['X']);
-    textures['O:big'] = makeTexture('O', 35, 12, color['O']);
-    textures['X:big'] = makeTexture('X', 35, 15, color['X']);
+    textures['O:big'] = makeTexture('O', 35, 12, colorDark['O']);
+    textures['X:big'] = makeTexture('X', 35, 15, colorDark['X']);
 
     for (let shape of ['row', 'col', 'diag']) {
         for (let player of ['O', 'X']) {

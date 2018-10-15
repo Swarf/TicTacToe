@@ -174,7 +174,6 @@ export class PlayArea extends Container {
     }
 
     nextBoardHint(shape, moveHints) {
-        console.log('HINT ' + shape + ' ', moveHints);
         for (let hint of moveHints) {
             this.playHints[shape][hint.x + hint.y * 3].visible = true;
         }
@@ -183,7 +182,6 @@ export class PlayArea extends Container {
     markSolved(shape, gridPos, winningSquares) {
         let bigSprite = loadGameSprite(shape + ':big');
         bigSprite.position.set(...this.smallCenterOffset({big: gridPos.big, small: {x: 1, y: 1}}));
-
         this.addChild(bigSprite);
 
         let winLineSprite = this.makeWinLineSprite(winningSquares, shape);
@@ -219,27 +217,9 @@ export class PlayArea extends Container {
             bigOffsetY + this.smallGridPadding + this.smallGridSize * (0.5 + gridPos.small.y) / 3
         ];
     }
-
-    winningLinePoints(squareA, squareB) {
-        let pointA = new Point(...this.smallCenterOffset(squareA));
-        let pointB = new Point(...this.smallCenterOffset(squareB));
-
-        let delta = pointDelta(pointA, pointB);
-        pointA.set(pointA.x + delta.x / 5, pointA.y + delta.y / 5);
-        pointB.set(pointB.x - delta.x / 5, pointA.y - delta.y / 5);
-
-        return {
-            from: pointA,
-            to: pointB
-        }
-    }
 }
 
 // TODO: Monkey patch these two into PIXI.Point?
 function pointDelta(a, b) {
     return new Point(a.x - b.x, a.y - b.y);
-}
-
-function pointDistance(a, b) {
-    return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }

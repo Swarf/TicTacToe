@@ -30,6 +30,16 @@ export default async function loadResources(app) {
     return loader.resources;
 }
 
+
+export const color = {
+    'O': 0xB5512D, // orange-ish
+    'X': 0x2D91B5  // blue-ish
+};
+const weightO = 6;
+const weightX = 7;
+const winLineLength = 57;
+
+
 export function loadGameSprite(spriteName) {
     let hover = spriteName.indexOf(':hover');
     if (hover > 0) {
@@ -47,14 +57,6 @@ export function loadGameSprite(spriteName) {
 
 function loadTextures() {
     let textures = {};
-
-    let color = {
-        'O': 0xB5512D, // orange-ish
-        'X': 0x2D91B5  // blue-ish
-    };
-    let weightO = 6;
-    let weightX = 7;
-    let winLineLength = 57;
 
     textures['O'] = makeTexture('O', 12, weightO, color['O']);
     textures['X'] = makeTexture('X', 12, weightX, color['X']);

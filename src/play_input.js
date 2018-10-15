@@ -41,6 +41,10 @@ export class PlayInput {
         this.playView.removeHover();
         this.playView.place(player, gridPos);
 
+        if (!_.isEmpty(outcome.nextBoards)) {
+            this.playView.nextBoardHint(outcome.nextPlayer, outcome.nextBoards.map(board => board2viewPoint(board)));
+        }
+
         if (outcome.board) {
             let gridPos = {big: board2viewPoint(outcome.board.position)};
             let winningSquares = outcome.board.squares.map(square => (

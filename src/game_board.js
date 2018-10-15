@@ -71,6 +71,7 @@ export class GameBoard {
             this.nextTurnBoards = [smallPos];
         }
 
+        // TODO fix bug where next board is resolved, so all boards are allowed. but another board is full.
         if (!ruleCanPlaceInResolved) {
             this.nextTurnBoards = this.nextTurnBoards.filter((board) => !this.outcomes[board]);
         }

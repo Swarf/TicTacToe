@@ -1,6 +1,6 @@
 import 'pixi.js';
 import {filters} from "pixi.js";
-import {loadGameSprite} from "./loader";
+import {color as shapeColors, loadGameSprite} from "./loader";
 
 
 const Container = PIXI.Container;
@@ -21,10 +21,29 @@ export class PlayArea extends Container {
         this.hoverSprite = null;
         this.hoverLine = null;
 
-        this.playHintLayer = new Container();
+        this.playHints = {      // Array of y * 3 + x
+            'O': new Array(9),  // 0 1 2
+            'X': new Array(9)   // 3 4 5
+        };                      // 6 7 8
     }
 
     setup() {
+        // Lowest layer is play hints
+        let playHintLayer = new Container();
+        for (let shape of Object.keys(this.playHints)) {
+            for (let x = 0; x < 3; x++) {
+                for (let y = 0; y < 3; y++) {
+                    let hint = this.makePlayHint(shapeColors[shape]);
+                    hint.position.set(this.gridPadding + x * this.gridSize / 3, this.gridPadding + y * this.gridSize / 3);
+                    hint.alpha = 0.2;
+                    hint.visible = false;
+                    playHintLayer.addChild(hint);
+                    this.playHints[shape][y * 3 + x] = hint;
+                }
+            }
+        }
+        this.addChild(playHintLayer);
+
         let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
         PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
 
@@ -49,6 +68,16 @@ export class PlayArea extends Container {
         graphic.filters = [blurFilter];
 
         this.addChild(graphic);
+        return graphic;
+    }
+
+    makePlayHint(color) {
+        let graphic = new Graphics();
+        graphic.lineStyle(0);
+        graphic.beginFill(color);
+        graphic.drawRect(0, 0, this.gridSize / 3, this.gridSize / 3);
+        // graphic.drawRect(this.smallGridPadding, this.smallGridPadding, this.smallGridSize, this.smallGridSize);
+        graphic.endFill();
         return graphic;
     }
 
@@ -141,6 +170,14 @@ export class PlayArea extends Container {
         sprite.position.set(...this.smallCenterOffset(gridPos));
 
         this.addChild(sprite);
+        this.playHints[shape].forEach((hint) => hint.visible = false);
+    }
+
+    nextBoardHint(shape, moveHints) {
+        console.log('HINT ' + shape + ' ', moveHints);
+        for (let hint of moveHints) {
+            this.playHints[shape][hint.x + hint.y * 3].visible = true;
+        }
     }
 
     markSolved(shape, gridPos, winningSquares) {

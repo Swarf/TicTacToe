@@ -33,7 +33,7 @@ export class PlayArea extends Container {
         for (let shape of Object.keys(this.playHints)) {
             for (let x = 0; x < 3; x++) {
                 for (let y = 0; y < 3; y++) {
-                    let hint = this.makePlayHint(shapeColors[shape]);
+                    let hint = this.makeSquareFill(shapeColors[shape]);
                     hint.position.set(this.gridPadding + x * this.gridSize / 3, this.gridPadding + y * this.gridSize / 3);
                     hint.alpha = 0.2;
                     hint.visible = false;
@@ -43,9 +43,6 @@ export class PlayArea extends Container {
             }
         }
         this.addChild(playHintLayer);
-
-        let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
-        PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
 
         let smallBoards = this.makeGraphic(2, 0x555555, 0.0);
 
@@ -57,6 +54,16 @@ export class PlayArea extends Container {
                 PlayArea.drawGrid(smallBoards, this.smallGridSize, this.smallGridPadding, offset);
             }
         }
+
+        this.playMarkerLayer = new Container();
+        this.addChild(this.playMarkerLayer);
+
+        this.bigSquareLayer = new Container();
+        this.addChild(this.bigSquareLayer);
+
+        // Big board should always be at the top
+        let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
+        PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
     }
 
     makeGraphic(lineWeight, color, blur) {
@@ -71,12 +78,11 @@ export class PlayArea extends Container {
         return graphic;
     }
 
-    makePlayHint(color) {
+    makeSquareFill(color) {
         let graphic = new Graphics();
         graphic.lineStyle(0);
         graphic.beginFill(color);
         graphic.drawRect(0, 0, this.gridSize / 3, this.gridSize / 3);
-        // graphic.drawRect(this.smallGridPadding, this.smallGridPadding, this.smallGridSize, this.smallGridSize);
         graphic.endFill();
         return graphic;
     }
@@ -169,7 +175,7 @@ export class PlayArea extends Container {
         let sprite = loadGameSprite(shape);
         sprite.position.set(...this.smallCenterOffset(gridPos));
 
-        this.addChild(sprite);
+        this.playMarkerLayer.addChild(sprite);
         this.playHints[shape].forEach((hint) => hint.visible = false);
     }
 
@@ -182,10 +188,18 @@ export class PlayArea extends Container {
     markSolved(shape, gridPos, winningSquares) {
         let bigSprite = loadGameSprite(shape + ':big');
         bigSprite.position.set(...this.smallCenterOffset({big: gridPos.big, small: {x: 1, y: 1}}));
-        this.addChild(bigSprite);
+        bigSprite.zIndex = 10;
+        let whiteLayer = this.makeSquareFill(0xFFFFFF);
+        whiteLayer.alpha = 0.85;
+        whiteLayer.position.set(
+            this.gridPadding + gridPos.big.x * this.gridSize / 3,
+            this.gridPadding + gridPos.big.y * this.gridSize / 3
+        );
+        this.bigSquareLayer.addChild(whiteLayer);
+        this.bigSquareLayer.addChild(bigSprite);
 
         let winLineSprite = this.makeWinLineSprite(winningSquares, shape);
-        this.addChild(winLineSprite);
+        this.playMarkerLayer.addChild(winLineSprite);
     }
 
     /* Assumes winning squares are sorted */

@@ -33,7 +33,8 @@ function createApp() {
         }
     );
 
-    app.renderer.backgroundColor = 0xFAFAFA;
+    app.renderer.backgroundColor = 0xFFFFFF;
+
     return app;
 }
 

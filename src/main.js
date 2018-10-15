@@ -39,7 +39,7 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-	let playView = new PlayArea(app);
+	let playView = new PlayArea();
 	playView.position.set(0, 50);
 
 	let gameBoard = new GameBoard();

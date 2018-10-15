@@ -18,8 +18,16 @@ export class PlayInput {
         if (!_.isEqual(gridPos, this.currentGridPos)) {
             this.currentGridPos = gridPos;
 
-            if (gridPos.small && this.gameBoard.isAllowed(...view2board(gridPos))) {
-                let sprite = this.playView.hoverSelection(this.gameBoard.atBat, gridPos);
+            let boardPositions = view2board(gridPos);
+            if (gridPos.small && this.gameBoard.isAllowed(...boardPositions)) {
+                let potentialWins = this.gameBoard.checkForWin(this.gameBoard.atBat, ...boardPositions);
+                if (potentialWins) {
+                    potentialWins = potentialWins.map(square => (
+                        {big: gridPos.big, small: board2viewPoint(square)}
+                    ));
+                }
+
+                let sprite = this.playView.hoverSelection(this.gameBoard.atBat, gridPos, potentialWins);
                 sprite.interactive = true;
                 sprite.on("mousedown", () => {this.takeMove(this.gameBoard.atBat, gridPos)});
             } else {

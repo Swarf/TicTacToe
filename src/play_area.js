@@ -9,9 +9,8 @@ const Point = PIXI.Point;
 
 
 export class PlayArea extends Container {
-    constructor(app) {
+    constructor() {
         super();
-        this.app = app;
 
         this.gridSize = 480;
         this.gridPadding = 30;
@@ -98,16 +97,13 @@ export class PlayArea extends Container {
         return {big: big, small: small};
     }
 
-    hoverSelection(shape, gridPos) {
+    hoverSelection(shape, gridPos, potentialWins) {
         if (this.hoverSprite) {
             this.removeHover();
         }
 
         let sprite = loadGameSprite(shape + ':hover');
-        sprite.position.set(
-            this.smallCenterOffset(gridPos.big.x, gridPos.small.x),
-            this.smallCenterOffset(gridPos.big.y, gridPos.small.y)
-        );
+        sprite.position.set(...this.smallCenterOffset(gridPos));
         this.hoverSprite = sprite;
 
         let lb = sprite.getLocalBounds();
@@ -119,7 +115,10 @@ export class PlayArea extends Container {
             lb.height + hitPadding * 2
         );
 
-        // TODO add hover line in for possible completed line
+        if (potentialWins) {
+            this.hoverLine = this.makeWinLineSprite(potentialWins, shape, ':hover');
+            this.addChild(this.hoverLine);
+        }
 
         this.addChild(sprite);
         return sprite;
@@ -139,43 +138,58 @@ export class PlayArea extends Container {
 
     place(shape, gridPos) {
         let sprite = loadGameSprite(shape);
-        sprite.position.set(
-            this.smallCenterOffset(gridPos.big.x, gridPos.small.x),
-            this.smallCenterOffset(gridPos.big.y, gridPos.small.y)
-        );
+        sprite.position.set(...this.smallCenterOffset(gridPos));
 
         this.addChild(sprite);
     }
 
     markSolved(shape, gridPos, winningSquares) {
         let bigSprite = loadGameSprite(shape + ':big');
-        bigSprite.position.set(
-            this.smallCenterOffset(gridPos.big.x, 1),
-            this.smallCenterOffset(gridPos.big.y, 1)
-        );
+        bigSprite.position.set(...this.smallCenterOffset({big: gridPos.big, small: {x: 1, y: 1}}));
 
         this.addChild(bigSprite);
-        console.log(winningSquares);
+
+        let winLineSprite = this.makeWinLineSprite(winningSquares, shape);
+        this.addChild(winLineSprite);
     }
 
-    smallCenterOffset(big, small) {
-        let bigOffset = this.gridPadding + this.gridSize * big / 3;
-        return bigOffset + this.smallGridPadding + this.smallGridSize * (0.5 + small) / 3;
+    /* Assumes winning squares are sorted */
+    makeWinLineSprite(winningSquares, shape, modifier = '') {
+        let xDir = (winningSquares[2].small.x - winningSquares[0].small.x) / 2;
+        let yDir = (winningSquares[2].small.y - winningSquares[0].small.y) / 2;
+
+        let sprite;
+        if (xDir === 0) {
+            sprite = loadGameSprite(`${shape}:col${modifier}`);
+        } else if (yDir === 0) {
+            sprite = loadGameSprite(`${shape}:row${modifier}`);
+        } else {
+            sprite = loadGameSprite(`${shape}:diag${modifier}`);
+            if (xDir * yDir < 0) {
+                sprite.rotation = Math.PI / 2;
+            }
+        }
+
+        sprite.position.set(...this.smallCenterOffset(winningSquares[1]));
+        return sprite;
+    }
+
+    smallCenterOffset(gridPos) {
+        let bigOffsetX = this.gridPadding + this.gridSize * gridPos.big.x / 3;
+        let bigOffsetY = this.gridPadding + this.gridSize * gridPos.big.y / 3;
+        return [
+            bigOffsetX + this.smallGridPadding + this.smallGridSize * (0.5 + gridPos.small.x) / 3,
+            bigOffsetY + this.smallGridPadding + this.smallGridSize * (0.5 + gridPos.small.y) / 3
+        ];
     }
 
     winningLinePoints(squareA, squareB) {
-        let pointA = new Point(
-            this.smallCenterOffset(squareA.big.x, squareA.small.x),
-            this.smallCenterOffset(squareA.big.y, squareA.small.y)
-        );
-
-        let pointB = new Point(
-            this.smallCenterOffset(squareB.big.x, squareB.small.x),
-            this.smallCenterOffset(squareB.big.y, squareB.small.y)
-        );
+        let pointA = new Point(...this.smallCenterOffset(squareA));
+        let pointB = new Point(...this.smallCenterOffset(squareB));
 
         let delta = pointDelta(pointA, pointB);
-        pointA.set(pointA.x + delta); // TODO finish
+        pointA.set(pointA.x + delta.x / 5, pointA.y + delta.y / 5);
+        pointB.set(pointB.x - delta.x / 5, pointA.y - delta.y / 5);
 
         return {
             from: pointA,

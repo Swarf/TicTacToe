@@ -52,7 +52,7 @@ export class GameBoard {
 
         // Evaluate whether this action won the square
         if (!this.outcomes[bigPos]) {
-            let smallWin = this.checkForWin(player, this.grid[bigPos]);
+            let smallWin = this.checkForWin(player, this.grid[bigPos], smallPos);
             if (smallWin) {
                 this.outcomes[bigPos] = player;
                 boardWin = {
@@ -97,7 +97,11 @@ export class GameBoard {
         return !this.grid[bigPos][smallPos];
     }
 
-    checkForWin(player, grid) {
-        return winningRows.find((row) => row.every((pos) => grid[pos] === player));
+    checkForWin(player, grid, usingPosition) {
+        if (_.isString(grid)) {
+            grid = this.grid[grid];
+        }
+        let possibleWins = usingPosition ? winningRows.filter((row) => row.includes(usingPosition)) : winningRows;
+        return possibleWins.find((row) => row.every((pos) => pos === usingPosition || grid[pos] === player));
     }
 }

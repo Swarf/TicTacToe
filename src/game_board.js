@@ -50,6 +50,9 @@ export class GameBoard {
         this.grid[bigPos][smallPos] = player;
         this.atBat = playerMarkers[1 - playerMarkers.indexOf(player)];
 
+        // List boards with remaining spaces by filtering out big boards with number of filled spaces equal to size
+        let boardsWithSpace = positions.filter(pos => _.size(_.pickBy(this.grid[pos])) !== _.size(this.grid[pos]));
+
         // Evaluate whether this action won the square
         if (!this.outcomes[bigPos]) {
             let smallWin = this.checkForWin(player, this.grid[bigPos], smallPos);
@@ -57,16 +60,20 @@ export class GameBoard {
                 this.outcomes[bigPos] = player;
                 boardWin = {
                     position: bigPos,
-                    squares: smallWin
+                    squares: smallWin,
+                    player: player
                 };
+            } else if (!boardsWithSpace.includes(bigPos)) {
+                // Board wasn't won but it is full
+                boardWin = {
+                    position: bigPos,
+                    player: false
+                }
             }
         }
 
-        let nextBoardFull = Object.values(this.grid[smallPos]).filter((val) => val === undefined).length === 0;
-        if (nextBoardFull) {
-            this.nextTurnBoards = positions.filter((x) => x !== smallPos);
-        } else if (this.outcomes[smallPos]) {
-            this.nextTurnBoards = positions;
+        if (this.outcomes[smallPos] || !boardsWithSpace.includes(smallPos)) {
+            this.nextTurnBoards = boardsWithSpace;
         } else {
             this.nextTurnBoards = [smallPos];
         }

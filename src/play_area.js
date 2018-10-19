@@ -186,9 +186,6 @@ export class PlayArea extends Container {
     }
 
     markSolved(shape, gridPos, winningSquares) {
-        let bigSprite = loadGameSprite(shape + ':big');
-        bigSprite.position.set(...this.smallCenterOffset({big: gridPos.big, small: {x: 1, y: 1}}));
-        bigSprite.zIndex = 10;
         let whiteLayer = this.makeSquareFill(0xFFFFFF);
         whiteLayer.alpha = 0.85;
         whiteLayer.position.set(
@@ -196,10 +193,16 @@ export class PlayArea extends Container {
             this.gridPadding + gridPos.big.y * this.gridSize / 3
         );
         this.bigSquareLayer.addChild(whiteLayer);
-        this.bigSquareLayer.addChild(bigSprite);
 
-        let winLineSprite = this.makeWinLineSprite(winningSquares, shape);
-        this.playMarkerLayer.addChild(winLineSprite);
+        if (shape) {
+            let bigSprite = loadGameSprite(shape + ':big');
+            bigSprite.position.set(...this.smallCenterOffset({big: gridPos.big, small: {x: 1, y: 1}}));
+            bigSprite.zIndex = 10;
+            this.bigSquareLayer.addChild(bigSprite);
+
+            let winLineSprite = this.makeWinLineSprite(winningSquares, shape);
+            this.playMarkerLayer.addChild(winLineSprite);
+        }
     }
 
     /* Assumes winning squares are sorted */
@@ -233,7 +236,6 @@ export class PlayArea extends Container {
     }
 }
 
-// TODO: Monkey patch these two into PIXI.Point?
 function pointDelta(a, b) {
     return new Point(a.x - b.x, a.y - b.y);
 }

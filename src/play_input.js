@@ -47,10 +47,10 @@ export class PlayInput {
 
         if (outcome.board) {
             let gridPos = {big: board2viewPoint(outcome.board.position)};
-            let winningSquares = outcome.board.squares.map(square => (
+            let winningSquares = _.map(outcome.board.squares, square => (
                 {big: gridPos.big, small: board2viewPoint(square)}
             ));
-            this.playView.markSolved(player, gridPos, winningSquares);
+            this.playView.markSolved(outcome.board.player, gridPos, winningSquares);
         }
     }
 }

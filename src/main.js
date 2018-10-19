@@ -29,7 +29,8 @@ function createApp() {
             height: 600,        // default: 600
             antialias: true,    // default: false
             transparent: false, // default: false
-            resolution: 1       // default: 1
+            resolution: 1,
+            forceCanvas: true,
         }
     );
 
@@ -40,12 +41,12 @@ function createApp() {
 
 // Setup creates the app
 function testApp(app) {
-	let playView = new PlayArea();
-	playView.position.set(0, 50);
+    let playView = new PlayArea();
+    playView.position.set(0, 50);
 
-	let gameBoard = new GameBoard();
+    let gameBoard = new GameBoard();
     let playInput = new PlayInput(playView, gameBoard);
 
     app.stage.addChild(playView);
-	playView.setup();
+    playView.setup();
 }

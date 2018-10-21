@@ -6,6 +6,8 @@ import {color as shapeColors, loadGameSprite} from "./loader";
 const Container = PIXI.Container;
 const Graphics = PIXI.Graphics;
 const Point = PIXI.Point;
+const Text = PIXI.Text;
+const TextStyle = PIXI.TextStyle;
 
 
 export class PlayArea extends Container {
@@ -78,11 +80,14 @@ export class PlayArea extends Container {
         return graphic;
     }
 
-    makeSquareFill(color) {
+    makeSquareFill(color, size) {
+        if (!size) {
+            size = this.gridSize / 3;
+        }
         let graphic = new Graphics();
         graphic.lineStyle(0);
         graphic.beginFill(color);
-        graphic.drawRect(0, 0, this.gridSize / 3, this.gridSize / 3);
+        graphic.drawRect(0, 0, size, size);
         graphic.endFill();
         return graphic;
     }
@@ -224,6 +229,36 @@ export class PlayArea extends Container {
 
         sprite.position.set(...this.smallCenterOffset(winningSquares[1]));
         return sprite;
+    }
+
+    endGame(winningSquares, shape) {
+        if (shape) {
+            // TODO show win
+        } else {
+            let whiteLayer = this.makeSquareFill(0xFFFFFF, this.gridSize + this.gridPadding);
+            whiteLayer.alpha = 0.85;
+            this.addChild(whiteLayer);
+
+            let tieText = new Text('TIE');
+            tieText.rotation = - Math.PI / 10;
+
+            tieText.style = new TextStyle({
+                fontFamily: 'Arial',
+                fontSize: 225,
+                fontWeight: 'bold',
+                fill: [0x749124],
+                dropShadow: true,
+                dropShadowColor: 0x222b0a,
+                dropShadowBlur: 4,
+                dropShadowAngle: Math.PI / 1.3,
+                dropShadowDistance: 9,
+                dropShadowAlpha: 0.2,
+            });
+
+            tieText.anchor.set(0.5);
+            tieText.position.set(this.gridPadding + this.gridSize / 2, this.gridPadding + this.gridSize / 2 - 30);
+            this.addChild(tieText);
+        }
     }
 
     smallCenterOffset(gridPos) {

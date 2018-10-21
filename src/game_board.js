@@ -82,12 +82,28 @@ export class GameBoard {
             this.nextTurnBoards = this.nextTurnBoards.filter((board) => !this.outcomes[board]);
         }
 
-        // TODO check for tie game
+        //  Evaluate whether the this action has ended the game
+        //      Must be after evaluating individual board outcome
+        let gameOutcome = null;
+        let gameWin = this.checkForWin(player, this.outcomes);
+        if (gameWin) {
+            gameOutcome = {
+                squares: gameWin,
+                player: player
+            };
+        } else if (_.isEmpty(this.nextTurnBoards)) {
+            gameOutcome = {
+                player: false
+            };
+        }
 
-        // Evaluate whether the this action has won the game
+        if (gameOutcome) {
+            this.nextTurnBoards = null;
+            this.atBat = null;
+        }
 
         return {
-            game: this.checkForWin(player, this.outcomes),
+            game: gameOutcome,
             board: boardWin,
             nextPlayer: this.atBat,
             nextBoards: this.nextTurnBoards

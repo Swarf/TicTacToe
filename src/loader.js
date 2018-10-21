@@ -51,8 +51,7 @@ export function loadGameSprite(spriteName) {
     }
 
     let sprite = new Sprite(textures[spriteName]);
-    sprite.anchor.x = 0.5;
-    sprite.anchor.y = 0.5;
+    sprite.anchor.set(0.5);
     if (hover > 0) {
         sprite.alpha = 0.7;
     }

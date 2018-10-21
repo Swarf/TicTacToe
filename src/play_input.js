@@ -41,7 +41,7 @@ export class PlayInput {
         this.playView.removeHover();
         this.playView.place(player, gridPos);
 
-        if (!_.isEmpty(outcome.nextBoards)) {
+        if (outcome.nextPlayer) {
             this.playView.nextBoardHint(outcome.nextPlayer, outcome.nextBoards.map(board => board2viewPoint(board)));
         }
 
@@ -51,6 +51,11 @@ export class PlayInput {
                 {big: gridPos.big, small: board2viewPoint(square)}
             ));
             this.playView.markSolved(outcome.board.player, gridPos, winningSquares);
+        }
+
+        console.log(outcome.game);
+        if (outcome.game) {
+            this.playView.endGame(outcome.game.squares, outcome.game.player);
         }
     }
 }

@@ -35,7 +35,7 @@ export const color = {
     'O': 0xB5512D, // orange-ish
     'X': 0x2D91B5  // blue-ish
 };
-const colorDark = {
+export const colorDark = {
     'O': 0xA64B29,
     'X': 0x247491
 };

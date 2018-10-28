@@ -106,7 +106,7 @@ export class GameBoard {
             game: gameOutcome,
             board: boardWin,
             nextPlayer: this.atBat,
-            nextBoards: this.nextTurnBoards
+            nextBoards: this.nextTurnBoards,
         }
     }
 

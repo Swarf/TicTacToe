@@ -54,9 +54,11 @@ export class PlayInput {
         }
 
         if (outcome.game) {
-            console.log(outcome.game);
             let unresolvedViewPos = this.gameBoard.unresolvedGrids().map(boardPos => board2viewPoint(boardPos));
-            this.playView.endGame(outcome.game.player, outcome.game.squares, unresolvedViewPos);
+            let winningSquares = outcome.game.squares.map(square => (
+                {big: board2viewPoint(square), small: {x: 1, y: 1}}
+            ));
+            this.playView.endGame(outcome.game.player, winningSquares, unresolvedViewPos);
         }
     }
 }

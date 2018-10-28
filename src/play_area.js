@@ -1,6 +1,7 @@
 import 'pixi.js';
 import {filters} from "pixi.js";
-import {color as shapeColors, loadGameSprite} from "./loader";
+import {color as shapeColors, colorDark as shapeColorsDark, loadGameSprite} from "./loader";
+import * as Bezier from 'bezier-easing';
 
 
 const Container = PIXI.Container;
@@ -233,7 +234,9 @@ export class PlayArea extends Container {
 
     endGame(shape, winningSquares, unresolved) {
         if (shape) {
-            // TODO show win
+            let start = this.smallCenterOffset(winningSquares[0]);
+            let end = this.smallCenterOffset(winningSquares[2]);
+            this.strikeThrough(shape, start, end);
 
             // Cover the small boards with no resolution
             for (let pos of unresolved) {
@@ -270,6 +273,39 @@ export class PlayArea extends Container {
             tieText.position.set(this.gridPadding + this.gridSize / 2, this.gridPadding + this.gridSize / 2 - 30);
             this.addChild(tieText);
         }
+    }
+
+    strikeThrough(shape, start, end) {
+        const overSize = 3.5;
+        let xDelta = overSize * this.smallGridPadding;
+        let yDelta = overSize * this.smallGridPadding;
+        const xDir = Math.sign(end[0] - start[0]);
+        const yDir = Math.sign(end[1] - start[1]);
+        start[0] -= xDelta * xDir;
+        start[1] -= yDelta * yDir;
+        end[0] += xDelta * xDir;
+        end[1] += yDelta * yDir;
+
+        let graphic = new Graphics();
+        const curve = Bezier(0.95, 0.05, 0.795, 0.035);
+        this.addChild(graphic);
+
+        const duration = 250;
+        const finish = Date.now() + duration;
+        const animate = () => {
+            const now = Date.now();
+            const progress = Math.min(1, curve(1 - Math.min((finish - now) / duration, 1)));
+
+            graphic.clear();
+            graphic.lineStyle(20, shapeColorsDark[shape]);
+            graphic.moveTo(...start);
+            graphic.lineTo(...start.map((val, idx) => val + (end[idx] - val) * progress));
+
+            if (now < finish) {
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
     }
 
     smallCenterOffset(gridPos) {

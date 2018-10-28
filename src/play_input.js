@@ -53,9 +53,10 @@ export class PlayInput {
             this.playView.markSolved(outcome.board.player, gridPos, winningSquares);
         }
 
-        console.log(outcome.game);
         if (outcome.game) {
-            this.playView.endGame(outcome.game.squares, outcome.game.player);
+            console.log(outcome.game);
+            let unresolvedViewPos = this.gameBoard.unresolvedGrids().map(boardPos => board2viewPoint(boardPos));
+            this.playView.endGame(outcome.game.player, outcome.game.squares, unresolvedViewPos);
         }
     }
 }

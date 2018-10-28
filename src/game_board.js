@@ -120,6 +120,10 @@ export class GameBoard {
         return !this.grid[bigPos][smallPos];
     }
 
+    unresolvedGrids() {
+        return _.keys(_.pickBy(this.outcomes, _.negate(_.identity)));
+    }
+
     checkForWin(player, grid, usingPosition) {
         if (_.isString(grid)) {
             grid = this.grid[grid];

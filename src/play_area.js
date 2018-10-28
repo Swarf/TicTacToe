@@ -156,7 +156,7 @@ export class PlayArea extends Container {
         );
 
         if (potentialWins) {
-            this.hoverLine = this.makeWinLineSprite(potentialWins, shape, ':hover');
+            this.hoverLine = this.makeWinLineSprite(shape, potentialWins, ':hover');
             this.addChild(this.hoverLine);
         }
 
@@ -205,13 +205,13 @@ export class PlayArea extends Container {
             bigSprite.zIndex = 10;
             this.bigSquareLayer.addChild(bigSprite);
 
-            let winLineSprite = this.makeWinLineSprite(winningSquares, shape);
+            let winLineSprite = this.makeWinLineSprite(shape, winningSquares);
             this.playMarkerLayer.addChild(winLineSprite);
         }
     }
 
     /* Assumes winning squares are sorted */
-    makeWinLineSprite(winningSquares, shape, modifier = '') {
+    makeWinLineSprite(shape, winningSquares, modifier = '') {
         let xDir = (winningSquares[2].small.x - winningSquares[0].small.x) / 2;
         let yDir = (winningSquares[2].small.y - winningSquares[0].small.y) / 2;
 
@@ -231,13 +231,24 @@ export class PlayArea extends Container {
         return sprite;
     }
 
-    endGame(winningSquares, shape) {
+    endGame(shape, winningSquares, unresolved) {
         if (shape) {
             // TODO show win
+
+            // Cover the small boards with no resolution
+            for (let pos of unresolved) {
+                let whiteLayer = this.makeSquareFill(0xFFFFFF);
+                whiteLayer.alpha = 0.85;
+                whiteLayer.position.set(
+                    this.gridPadding + pos.x * this.gridSize / 3,
+                    this.gridPadding + pos.y * this.gridSize / 3
+                );
+                this.bigSquareLayer.addChild(whiteLayer);
+            }
         } else {
-            let whiteLayer = this.makeSquareFill(0xFFFFFF, this.gridSize + this.gridPadding);
-            whiteLayer.alpha = 0.85;
-            this.addChild(whiteLayer);
+            let whiteOverlay = this.makeSquareFill(0xFFFFFF, this.gridSize + this.gridPadding);
+            whiteOverlay.alpha = 0.85;
+            this.addChild(whiteOverlay);
 
             let tieText = new Text('TIE');
             tieText.rotation = - Math.PI / 10;

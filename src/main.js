@@ -35,7 +35,6 @@ function createApp() {
     );
 
     app.renderer.backgroundColor = 0xFFFFFF;
-
     return app;
 }
 

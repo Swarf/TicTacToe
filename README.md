@@ -22,3 +22,14 @@
 - [ ] Service deploy tools
 - [ ] Audio
 
+## Built With
+* [WebStorm](https://www.jetbrains.com/webstorm/) - Javascript IDE
+* [PixiJS](http://www.pixijs.com/) - 2D graphics framework
+* [webpack](https://webpack.js.org/) - Project builder and dev tools
+
+
+## Authors
+* **Ryan Cox**
+
+## License
+All rights reserved.

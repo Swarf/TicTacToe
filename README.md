@@ -29,7 +29,8 @@
 
 
 ## Authors
-* **Ryan Cox**
+* **Claudette Ngai** – UX
+* **Ryan Cox** - Code
 
 ## License
 All rights reserved.

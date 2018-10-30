@@ -21,3 +21,6 @@ examples/
 
 # Build
 dist/
+
+# Temp
+*.swp

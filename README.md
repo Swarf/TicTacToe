@@ -1,5 +1,8 @@
 # Ultimate Tic Tac Toe
 
+## Game Concept
+[Tic Tac Toe to the Next Level](https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe)
+
 ## Development
 
 ### Run in dev mode:
@@ -13,6 +16,7 @@
 
 
 ## TODO
+- [x] UX Design 
 - [x] Local experience working
 - [ ] Automation for testing
 - [ ] Game Controls UI

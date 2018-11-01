@@ -52,5 +52,7 @@ module.exports = {
         open: true, // Open the page in browser
         publicPath: '/',
     },
+
+    mode: 'production',
 };
 

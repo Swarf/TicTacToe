@@ -5,26 +5,31 @@ import loadResources from "./loader";
 import {PlayArea} from "./play_area";
 import {PlayInput} from "./play_input";
 import {GameBoard} from "./game_board";
+import {addDebugPanel} from "./debug_panel";
 
 
-Promise.resolve(setup())
+Promise.resolve(runApp())
     .catch((err) => {
         console.error('Caught error at App level');
         console.error(err);
     });
 
 
-async function setup() {
-    let app = createApp();
-    document.body.appendChild(app.view);
+async function runApp() {
+    const app = createApp();
+    const appDiv = document.getElementById('gameApp');
+    appDiv.appendChild(app.view);
+    // document.body.appendChild(app.view);
 
-    let resources = await loadResources(app);
-    testApp(app);
+    await loadResources(app);
+    let controller = runGame(app);
+    addDebugPanel(controller);
 }
+
 
 function createApp() {
     //Create a Pixi Application
-    let app = new PIXI.Application({
+    const app = new PIXI.Application({
             width: 800,         // default: 800
             height: 600,        // default: 600
             antialias: true,    // default: false
@@ -39,7 +44,7 @@ function createApp() {
 }
 
 // Setup creates the app
-function testApp(app) {
+function runGame(app) {
     let playView = new PlayArea();
     playView.position.set(0, 50);
 
@@ -48,4 +53,6 @@ function testApp(app) {
 
     app.stage.addChild(playView);
     playView.setup();
+
+    return playInput;
 }

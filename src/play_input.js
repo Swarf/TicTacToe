@@ -8,6 +8,8 @@ export class PlayInput {
         this.playView = playView;
         this.gameBoard = gameBoard;
         this.currentGridPos = null;
+        this.trackHist = false;
+        this.hist = [];
 
         playView.interactive = true;
         playView.on("mousemove", (event) => {this.checkMousePosition(event)});
@@ -60,6 +62,28 @@ export class PlayInput {
             ));
             this.playView.endGame(outcome.game.player, winningSquares, unresolvedViewPos);
         }
+
+        if (this.trackHist) {
+            this.hist.push({player: player, pos: gridPos});
+            console.log('foo');
+        } else {
+            console.log('nope');
+        }
+    }
+
+    reset() {
+        console.log('NYI');
+    }
+
+    record() {
+        this.hist = [];
+        this.trackHist = true;
+        console.log('anotehusoteh')
+    }
+
+    dump() {
+        this.trackHist = false;
+        console.log(JSON.stringify(this.hist));
     }
 }
 

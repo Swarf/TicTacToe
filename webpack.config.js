@@ -19,7 +19,20 @@ module.exports = {
     },
 
     module: {
-    },
+		rules: [
+			{
+				test: /\.css$/,
+                use: [
+                    "style-loader",
+                    "css-loader"
+                ]
+			},
+			{
+			    test: /\.(ico|jpe?g|png|gif)$/,
+                loader: "file-loader"
+			}
+		]
+	},
 
     plugins: [  // Array of plugins to apply to build chunk
         new HtmlWebpackPlugin({

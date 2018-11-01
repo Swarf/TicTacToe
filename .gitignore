@@ -13,9 +13,6 @@ node_modules/
 # Project
 .idea
 
-# Misc
-examples/
-
 # macOS
 .DS_Store
 

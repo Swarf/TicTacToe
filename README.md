@@ -12,12 +12,12 @@
 `npx webpack`
 
 ### Verify dist with:
-`python -m http.server 8000 --directory ./dist`
+`python3 -m http.server 8000 --directory ./dist`
 
 
 ## TODO
 - [x] UX Design 
-- [x] Local experience working
+- [x] Single-player game
 - [ ] Automation for testing
 - [ ] Game Controls UI
 - [ ] Computer player
@@ -29,7 +29,7 @@
 * [WebStorm](https://www.jetbrains.com/webstorm/) – Javascript IDE
 * [PixiJS](http://www.pixijs.com/) – 2D graphics framework
 * [webpack](https://webpack.js.org/) – Project builder and dev tools
-* [Skettch](https://www.sketchapp.com/) – Visuals
+* [Sketch](https://www.sketchapp.com/) – Visuals
 
 
 ## Authors

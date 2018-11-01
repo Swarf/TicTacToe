@@ -1,16 +1,13 @@
-
 import $ from 'jquery';
 import 'jquery-ui/ui/widgets/button';
 import 'jquery-ui/ui/widgets/selectmenu';
-// import 'jquery-ui/themes/base/all.css';
-// import 'jquery-ui/themes/base/core.css';
 import 'jquery-ui/themes/base/menu.css';
 import 'jquery-ui/themes/base/theme.css';
 import 'jquery-ui/themes/base/button.css';
 import 'jquery-ui/themes/base/selectmenu.css';
 
 
-export function addDebugPanel(controller) {
+export default function (controller) {
     const replays = {
         'X wins': null,
         'O wins': null,

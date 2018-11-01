@@ -2,10 +2,9 @@
 
 import 'pixi.js';
 import loadResources from "./loader";
-import {PlayArea} from "./play_area";
-import {PlayInput} from "./play_input";
-import {GameBoard} from "./game_board";
-import {addDebugPanel} from "./debug_panel";
+import PlayArea from "./play_area";
+import PlayInput from "./play_input";
+import GameBoard from "./game_board";
 
 
 Promise.resolve(runApp())
@@ -19,11 +18,12 @@ async function runApp() {
     const app = createApp();
     const appDiv = document.getElementById('gameApp');
     appDiv.appendChild(app.view);
-    // document.body.appendChild(app.view);
 
     await loadResources(app);
     let controller = runGame(app);
-    addDebugPanel(controller);
+    import(/* webpackChunkName: "debug" */ './debug_panel')
+        .then(({default: addDebugPanel}) => addDebugPanel(controller))
+        .catch((err) => console.error('No debug: ' + err));
 }
 
 

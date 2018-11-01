@@ -2,7 +2,7 @@ import 'pixi.js';
 import 'lodash/core';
 
 
-export class PlayInput {
+export default class PlayInput {
     constructor(playView, gameBoard) {
 
         this.playView = playView;

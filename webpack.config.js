@@ -1,6 +1,5 @@
 'use strict';
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
@@ -10,7 +9,7 @@ let distDir = path.resolve(__dirname, 'dist/');
 module.exports = {
     // Entry point : first executed file
     entry: {
-        app: './src/main.js'
+        app: './src/main.js',
     },
 
     output: {
@@ -39,12 +38,6 @@ module.exports = {
             template: "./static/index.html",
             inject: 'body'
         }),
-        new CopyWebpackPlugin([
-            {
-                from: 'static/images',
-                to: 'images'
-            }
-        ]),
     ],
 
     devtool: 'source-map',

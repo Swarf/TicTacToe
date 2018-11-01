@@ -22,7 +22,7 @@ const firstPlayer = playerMarkers[0];
 const ruleCanPlaceInResolved = false;
 
 
-export class GameBoard {
+export default class GameBoard {
     constructor() {
         // Map of positions -> maps of position -> undef.
         //  I guess this is the closest I'll ever get to a dict comprehension in js.

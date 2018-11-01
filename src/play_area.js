@@ -11,7 +11,7 @@ const Text = PIXI.Text;
 const TextStyle = PIXI.TextStyle;
 
 
-export class PlayArea extends Container {
+export default class PlayArea extends Container {
     constructor() {
         super();
 

@@ -20,9 +20,23 @@ async function runApp() {
 
     await loadResources(app);
     let controller = runGame(app);
-    import(/* webpackChunkName: "debug" */ './debug_panel')
-        .then(({default: DebugPanel}) => new DebugPanel(controller))
-        .catch((err) => console.error('No debug: ' + err));
+
+    let url = new URL(window.location.href);
+    let debugParam = url.searchParams.get('debug');
+    if (debugParam !== null) {
+        localStorage.showDebugPanel = debugParam === '' ? 1 : parseInt(debugParam);
+    }
+
+    if (Boolean(parseInt(localStorage.showDebugPanel))) {
+        console.log(localStorage.showDebugPanel, typeof localStorage.showDebugPanel);
+        import(
+            /* webpackChunkName: "debug" */
+            /* webpackMode: "lazy" */
+            './debug_panel'
+            )
+            .then(({default: DebugPanel}) => new DebugPanel(controller))
+            .catch((err) => console.error('No debug: ' + err));
+    }
 }
 
 

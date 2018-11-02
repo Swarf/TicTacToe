@@ -57,7 +57,8 @@ export default class PlayInput {
 
         if (outcome.game) {
             let unresolvedViewPos = this.gameBoard.unresolvedGrids().map(boardPos => board2viewPoint(boardPos));
-            let winningSquares = outcome.game.squares.map(square => (
+            // [rc] Using _.map because outcome.game.squares could be null
+            let winningSquares = _.map(outcome.game.squares, square => (
                 {big: board2viewPoint(square), small: {x: 1, y: 1}}
             ));
             this.playView.endGame(outcome.game.player, winningSquares, unresolvedViewPos);

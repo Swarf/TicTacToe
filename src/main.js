@@ -28,7 +28,6 @@ async function runApp() {
     }
 
     if (Boolean(parseInt(localStorage.showDebugPanel))) {
-        console.log(localStorage.showDebugPanel, typeof localStorage.showDebugPanel);
         import(
             /* webpackChunkName: "debug" */
             /* webpackMode: "lazy" */

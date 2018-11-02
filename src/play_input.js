@@ -69,16 +69,19 @@ export default class PlayInput {
         }
     }
 
+    // noinspection JSUnusedGlobalSymbols
     reset() {
         this.gameBoard = new GameBoard();
         this.playView.clearMarkers();
     }
 
+    // noinspection JSUnusedGlobalSymbols
     record() {
         this.hist = [];
         this.trackHist = true;
     }
 
+    // noinspection JSUnusedGlobalSymbols
     dump() {
         console.log(JSON.stringify(this.hist));
     }

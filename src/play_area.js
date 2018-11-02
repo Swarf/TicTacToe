@@ -65,6 +65,9 @@ export default class PlayArea extends Container {
         this.bigSquareLayer = new Container();
         this.addChild(this.bigSquareLayer);
 
+        this.statusLayer = new Container();
+        this.addChild(this.statusLayer);
+
         // Big board should always be at the top
         let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
         PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
@@ -252,7 +255,7 @@ export default class PlayArea extends Container {
         } else {
             let whiteOverlay = this.makeSquareFill(0xFFFFFF, this.gridSize + this.gridPadding);
             whiteOverlay.alpha = 0.85;
-            this.addChild(whiteOverlay);
+            this.statusLayer.addChild(whiteOverlay);
 
             let tieText = new Text('TIE');
             tieText.rotation = - Math.PI / 10;
@@ -272,7 +275,7 @@ export default class PlayArea extends Container {
 
             tieText.anchor.set(0.5);
             tieText.position.set(this.gridPadding + this.gridSize / 2, this.gridPadding + this.gridSize / 2 - 30);
-            this.addChild(tieText);
+            this.statusLayer.addChild(tieText);
         }
     }
 
@@ -289,7 +292,7 @@ export default class PlayArea extends Container {
 
         let graphic = new Graphics();
         const curve = Bezier(0.95, 0.05, 0.795, 0.035);
-        this.addChild(graphic);
+        this.statusLayer.addChild(graphic);
 
         const duration = 250;
         const finish = Date.now() + duration;
@@ -316,6 +319,14 @@ export default class PlayArea extends Container {
             bigOffsetX + this.smallGridPadding + this.smallGridSize * (0.5 + gridPos.small.x) / 3,
             bigOffsetY + this.smallGridPadding + this.smallGridSize * (0.5 + gridPos.small.y) / 3
         ];
+    }
+
+    clearMarkers() {
+        this.removeHover();
+        this.statusLayer.removeChildren();
+        this.playMarkerLayer.removeChildren();
+        this.bigSquareLayer.removeChildren();
+        Object.values(this.playHints).forEach(shapeHints => shapeHints.forEach((hint) => hint.visible = false));
     }
 }
 

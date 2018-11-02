@@ -70,7 +70,8 @@ export default class PlayInput {
     }
 
     reset() {
-        console.log('NYI');
+        this.gameBoard = new GameBoard();
+        this.playView.clearMarkers();
     }
 
     record() {
@@ -79,7 +80,6 @@ export default class PlayInput {
     }
 
     dump() {
-        this.trackHist = false;
         console.log(JSON.stringify(this.hist));
     }
 }

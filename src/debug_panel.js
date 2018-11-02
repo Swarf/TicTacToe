@@ -37,14 +37,13 @@ export default class DebugPanel {
     debugCall(callName) {
         switch (callName) {
             case 'reset':
-                this.replay(true);
+                this.controller.reset();
                 break;
-            // this.controller.reset(); break;
             case 'go':
-                this.controller.record();
+                this.replay();
                 break;
             case 'go-1':
-                this.controller.dump();
+                this.replay(true);
                 break;
             default:
                 throw new Error('TicTacToe debug call invalid: ' + callName);

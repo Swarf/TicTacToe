@@ -22,7 +22,7 @@ async function runApp() {
     await loadResources(app);
     let controller = runGame(app);
     import(/* webpackChunkName: "debug" */ './debug_panel')
-        .then(({default: addDebugPanel}) => addDebugPanel(controller))
+        .then(({default: DebugPanel}) => new DebugPanel(controller))
         .catch((err) => console.error('No debug: ' + err));
 }
 

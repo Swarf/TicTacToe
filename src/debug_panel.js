@@ -5,33 +5,57 @@ import 'jquery-ui/themes/base/menu.css';
 import 'jquery-ui/themes/base/theme.css';
 import 'jquery-ui/themes/base/button.css';
 import 'jquery-ui/themes/base/selectmenu.css';
+import replays from './debug_replay';
 
 
-export default function (controller) {
-    const replays = {
-        'X wins': null,
-        'O wins': null,
-        'Tie': null,
-        'X wins full': null,
-        'O wins full': null,
-        'Tie full board': null,
-    };
+export default class DebugPanel {
+    constructor(controller) {
+        this.controller = controller;
+        this.selectReplay = $('.debug-control select');
 
-    const debugFuncs = {
-        reset: 'reset',
-        go: 'record',
-        'go-1': 'dump',
-    };
-
-    let options = Object.keys(replays).map(x => `<option value="${x}">${x}</option>`);
-    $('.debug-control select').append(options.join('')).selectmenu().selectmenu({
-        width: 150,
-        position: {
-            my: "left top", at: "left bottom+5", collision: "flip"
+        let options = Object.keys(replays).map(x => `<option value="${x}">${x}</option>`);
+        this.selectReplay
+            .append(options.join(''))
+            .selectmenu()
+            .selectmenu({
+                width: 150,
+                position: {
+                    my: "left top", at: "left bottom+5", collision: "flip"
+                }
+            })
+            .on('selectmenuchange', () => localStorage.debugReplaySelect = this.selectReplay.val());
+        if (localStorage.debugReplaySelect) {
+            this.selectReplay.val(localStorage.debugReplaySelect).selectmenu('refresh');
         }
-    });
-    $('.debug-control button').button().click(function () {
-        console.log($(this).attr('name'));
-        controller[debugFuncs[$(this).attr('name')]]();
-    });
+
+        let self = this;
+        $('.debug-control button').button().click(function () {
+            self.debugCall($(this).attr('name'));
+        });
+    }
+
+    debugCall(callName) {
+        switch (callName) {
+            case 'reset':
+                this.replay(true);
+                break;
+            // this.controller.reset(); break;
+            case 'go':
+                this.controller.record();
+                break;
+            case 'go-1':
+                this.controller.dump();
+                break;
+            default:
+                throw new Error('TicTacToe debug call invalid: ' + callName);
+        }
+    }
+
+    replay(omitLast = false) {
+        let replayList = replays[this.selectReplay.val()];
+        let last = replayList.length - (omitLast ? 1 : 0);
+        for (let i = 0; i < last; i++) {
+            this.controller.takeMove(replayList[i].player, replayList[i].pos);
+        }
+    }
 }

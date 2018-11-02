@@ -66,9 +66,6 @@ export default class PlayInput {
 
         if (this.trackHist) {
             this.hist.push({player: player, pos: gridPos});
-            console.log('foo');
-        } else {
-            console.log('nope');
         }
     }
 
@@ -79,7 +76,6 @@ export default class PlayInput {
     record() {
         this.hist = [];
         this.trackHist = true;
-        console.log('anotehusoteh')
     }
 
     dump() {

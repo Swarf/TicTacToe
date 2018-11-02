@@ -4,7 +4,6 @@ import 'pixi.js';
 import loadResources from "./loader";
 import PlayArea from "./play_area";
 import PlayInput from "./play_input";
-import GameBoard from "./game_board";
 
 
 Promise.resolve(runApp())
@@ -48,8 +47,7 @@ function runGame(app) {
     let playView = new PlayArea();
     playView.position.set(0, 50);
 
-    let gameBoard = new GameBoard();
-    let playInput = new PlayInput(playView, gameBoard);
+    let playInput = new PlayInput(playView);
 
     app.stage.addChild(playView);
     playView.setup();

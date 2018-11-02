@@ -1,12 +1,12 @@
-import 'pixi.js';
 import 'lodash/core';
+import GameBoard from "./game_board";
 
 
 export default class PlayInput {
-    constructor(playView, gameBoard) {
+    constructor(playView) {
 
         this.playView = playView;
-        this.gameBoard = gameBoard;
+        this.gameBoard = new GameBoard();
         this.currentGridPos = null;
         this.trackHist = false;
         this.hist = [];

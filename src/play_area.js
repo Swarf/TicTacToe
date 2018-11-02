@@ -9,6 +9,7 @@ const Graphics = PIXI.Graphics;
 const Point = PIXI.Point;
 const Text = PIXI.Text;
 const TextStyle = PIXI.TextStyle;
+const Rectangle = PIXI.Rectangle;
 
 
 export default class PlayArea extends Container {
@@ -149,7 +150,7 @@ export default class PlayArea extends Container {
 
         let lb = sprite.getLocalBounds();
         let hitPadding = this.smallGridSize / 3 - lb.width;
-        sprite.hitArea = new PIXI.Rectangle(
+        sprite.hitArea = new Rectangle(
             lb.x - hitPadding,
             lb.y - hitPadding,
             lb.width + hitPadding * 2,

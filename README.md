@@ -18,7 +18,6 @@
 ## TODO
 - [x] UX Design 
 - [x] Single-player game
-- [x] Automation for testing
 - [ ] Game Controls UI
 - [ ] Computer player
 - [ ] Networked play

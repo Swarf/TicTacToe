@@ -1,12 +1,12 @@
 import 'lodash/core';
-import GameBoard from "./game_board";
+import GameModel from "./game_model";
 
 
 export default class PlayInput {
     constructor(playView) {
 
         this.playView = playView;
-        this.gameBoard = new GameBoard();
+        this.gameModel = new GameModel();
         this.currentGridPos = null;
         this.trackHist = false;
         this.hist = [];
@@ -21,17 +21,17 @@ export default class PlayInput {
             this.currentGridPos = gridPos;
 
             let boardPositions = view2board(gridPos);
-            if (gridPos.small && this.gameBoard.isAllowed(...boardPositions)) {
-                let potentialWins = this.gameBoard.checkForWin(this.gameBoard.atBat, ...boardPositions);
+            if (gridPos.small && this.gameModel.isAllowed(...boardPositions)) {
+                let potentialWins = this.gameModel.checkForWin(this.gameModel.atBat, ...boardPositions);
                 if (potentialWins) {
                     potentialWins = potentialWins.map(square => (
                         {big: gridPos.big, small: board2viewPoint(square)}
                     ));
                 }
 
-                let sprite = this.playView.hoverSelection(this.gameBoard.atBat, gridPos, potentialWins);
+                let sprite = this.playView.hoverSelection(this.gameModel.atBat, gridPos, potentialWins);
                 sprite.interactive = true;
-                sprite.on("mousedown", () => {this.takeMove(this.gameBoard.atBat, gridPos)});
+                sprite.on("mousedown", () => {this.takeMove(this.gameModel.atBat, gridPos)});
             } else {
                 this.playView.removeHover();
             }
@@ -39,7 +39,7 @@ export default class PlayInput {
     }
 
     takeMove(player, gridPos) {
-        let outcome = this.gameBoard.place(player, ...view2board(gridPos));
+        let outcome = this.gameModel.place(player, ...view2board(gridPos));
         this.playView.removeHover();
         this.playView.place(player, gridPos);
 
@@ -56,7 +56,7 @@ export default class PlayInput {
         }
 
         if (outcome.game) {
-            let unresolvedViewPos = this.gameBoard.unresolvedGrids().map(boardPos => board2viewPoint(boardPos));
+            let unresolvedViewPos = this.gameModel.unresolvedGrids().map(boardPos => board2viewPoint(boardPos));
             // [rc] Using _.map because outcome.game.squares could be null
             let winningSquares = _.map(outcome.game.squares, square => (
                 {big: board2viewPoint(square), small: {x: 1, y: 1}}
@@ -71,7 +71,7 @@ export default class PlayInput {
 
     // noinspection JSUnusedGlobalSymbols
     reset() {
-        this.gameBoard = new GameBoard();
+        this.gameModel = new GameModel();
         this.playView.clearMarkers();
     }
 

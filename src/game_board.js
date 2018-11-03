@@ -1,6 +1,8 @@
 import 'lodash';
 
-const positions = [
+export const playerMarkers = ['X', 'O'];
+
+export const positions = [
     'TL', 'TC', 'TR',
     'CL', 'CC', 'CR',
     'BL', 'BC', 'BR',
@@ -17,118 +19,49 @@ const winningRows = [
     ['BL', 'CC', 'TR'],
 ];
 
-const playerMarkers = ['X', 'O'];
-const firstPlayer = playerMarkers[0];
-const ruleCanPlaceInResolved = false;
-
-
-export default class GameBoard {
+export class GameBoard {
     constructor() {
         // Map of positions -> maps of position -> undef.
         //  I guess this is the closest I'll ever get to a dict comprehension in js.
         //  Also, this is the only reason I can't use lodash/core.
         this.grid = _.mapValues(_.keyBy(positions), () => _.mapValues(_.keyBy(positions), false));
 
-        this.outcomes = {};
-        _.each(positions, pos => this.outcomes[pos] = null);
-
-        this.nextTurnBoards = positions;
-        this.atBat = firstPlayer;
+        this.bigBoard = {};
+        _.each(positions, pos => this.bigBoard[pos] = null);
     }
 
-    place(player, bigPos, smallPos) {
-        let boardWin = false;
+    get(big, small) {
+        return this.grid[big][small];
+    }
 
-        if (!this.isAllowed(bigPos, smallPos)) {
-            throw new Error(`GameBoard.place - position not allowed: ${bigPos},${smallPos}`);
-        }
+    set(big, small, player) {
+        this.grid[big][small] = player;
+        let winPositions = null;
 
-        if (player !== this.atBat) {
-            throw new Error(`GameBoard.place - ${player} is not current player`);
-        }
-
-        this.grid[bigPos][smallPos] = player;
-        this.atBat = playerMarkers[1 - playerMarkers.indexOf(player)];
-
-        // List boards with remaining spaces by filtering out big boards with number of filled spaces equal to size
-        let boardsWithSpace = positions.filter(pos => _.size(_.pickBy(this.grid[pos])) !== _.size(this.grid[pos]));
-
-        // Evaluate whether this action won the square
-        if (!this.outcomes[bigPos]) {
-            let smallWin = this.checkForWin(player, this.grid[bigPos], smallPos);
-            if (smallWin) {
-                this.outcomes[bigPos] = player;
-                boardWin = {
-                    position: bigPos,
-                    squares: smallWin,
-                    player: player
-                };
-            } else if (!boardsWithSpace.includes(bigPos)) {
-                // Board wasn't won but it is full
-                boardWin = {
-                    position: bigPos,
-                    player: false
-                }
+        if (!this.bigBoard[big] && player) {
+            winPositions = checkForWin(player, this.grid[big], small);
+            if (winPositions) {
+                this.bigBoard[big] = player;
             }
         }
 
-        if (this.outcomes[smallPos] || !boardsWithSpace.includes(smallPos)) {
-            this.nextTurnBoards = boardsWithSpace;
-        } else {
-            this.nextTurnBoards = [smallPos];
-        }
-
-        if (!ruleCanPlaceInResolved) {
-            this.nextTurnBoards = this.nextTurnBoards.filter((board) => !this.outcomes[board]);
-        }
-
-        //  Evaluate whether the this action has ended the game
-        //      Must be after evaluating individual board outcome
-        let gameOutcome = null;
-        let gameWin = this.checkForWin(player, this.outcomes);
-        if (gameWin) {
-            gameOutcome = {
-                squares: gameWin,
-                player: player
-            };
-        } else if (_.isEmpty(this.nextTurnBoards)) {
-            gameOutcome = {
-                player: false
-            };
-        }
-
-        if (gameOutcome) {
-            this.nextTurnBoards = null;
-            this.atBat = null;
-        }
-
-        return {
-            game: gameOutcome,
-            board: boardWin,
-            nextPlayer: this.atBat,
-            nextBoards: this.nextTurnBoards,
-        }
+        return winPositions;
     }
 
-    isAllowed(bigPos, smallPos) {
-        // Is this board fair game for placement?
-        if (this.nextTurnBoards && !this.nextTurnBoards.includes(bigPos)) {
-            return false;
-        }
-
-        // Is the space free?
-        return !this.grid[bigPos][smallPos];
+    boardsWithSpace() {
+        return positions.filter(pos => _.size(_.pickBy(this.grid[pos])) !== _.size(this.grid[pos]));
     }
 
-    unresolvedGrids() {
-        return _.keys(_.pickBy(this.outcomes, _.negate(_.identity)));
+    boardsNotWon() {
+        return _.keys(_.pickBy(this.bigBoard, _.negate(_.identity)))
     }
 
-    checkForWin(player, grid, usingPosition) {
-        if (_.isString(grid)) {
-            grid = this.grid[grid];
-        }
-        let possibleWins = usingPosition ? winningRows.filter((row) => row.includes(usingPosition)) : winningRows;
-        return possibleWins.find((row) => row.every((pos) => pos === usingPosition || grid[pos] === player));
+    getBig(pos) {
+        return this.bigBoard[pos];
     }
+}
+
+export function checkForWin(player, grid, usingPosition) {
+    let possibleWins = usingPosition ? winningRows.filter((row) => row.includes(usingPosition)) : winningRows;
+    return possibleWins.find((row) => row.every((pos) => pos === usingPosition || grid[pos] === player));
 }

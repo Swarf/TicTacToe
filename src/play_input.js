@@ -22,7 +22,7 @@ export default class PlayInput {
 
             let boardPositions = view2board(gridPos);
             if (gridPos.small && this.gameModel.isAllowed(...boardPositions)) {
-                let potentialWins = this.gameModel.checkForWin(this.gameModel.atBat, ...boardPositions);
+                let potentialWins = this.gameModel.checkPotentialWin(this.gameModel.atBat, ...boardPositions);
                 if (potentialWins) {
                     potentialWins = potentialWins.map(square => (
                         {big: gridPos.big, small: board2viewPoint(square)}

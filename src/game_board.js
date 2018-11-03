@@ -48,6 +48,10 @@ export class GameBoard {
         return winPositions;
     }
 
+    checkBigBoardWin(player) {
+        checkForWin(player, this.bigBoard)
+    }
+
     boardsWithSpace() {
         return positions.filter(pos => _.size(_.pickBy(this.grid[pos])) !== _.size(this.grid[pos]));
     }

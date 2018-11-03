@@ -97,10 +97,7 @@ export default class GameModel {
         return this.board.boardsNotWon();
     }
 
-    checkForWin(player, grid, usingPosition) {
-        if (_.isString(grid)) {
-            grid = this.board.grid[grid];
-        }
-        return checkForWin(player, grid, usingPosition);
+    checkPotentialWin(player, bigPos, smallPos) {
+        return checkForWin(player, this.board.grid[bigPos], smallPos);
     }
 }

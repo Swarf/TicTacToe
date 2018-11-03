@@ -65,12 +65,13 @@ export default class PlayArea extends Container {
         this.bigSquareLayer = new Container();
         this.addChild(this.bigSquareLayer);
 
-        this.statusLayer = new Container();
-        this.addChild(this.statusLayer);
-
         // Big board should always be at the top
         let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
         PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
+        
+        this.statusLayer = new Container();
+        this.addChild(this.statusLayer);
+
     }
 
     makeGraphic(lineWeight, color, blur) {

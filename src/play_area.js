@@ -68,7 +68,7 @@ export default class PlayArea extends Container {
         // Big board should always be at the top
         let bigBoard = this.makeGraphic(4, 0x404040, 0.1);
         PlayArea.drawGrid(bigBoard, this.gridSize, this.gridPadding);
-        
+
         this.statusLayer = new Container();
         this.addChild(this.statusLayer);
 
@@ -255,7 +255,7 @@ export default class PlayArea extends Container {
             }
         } else {
             let whiteOverlay = this.makeSquareFill(0xFFFFFF, this.gridSize + this.gridPadding);
-            whiteOverlay.alpha = 0.85;
+            whiteOverlay.alpha = 0.65;
             this.statusLayer.addChild(whiteOverlay);
 
             let tieText = new Text('TIE');

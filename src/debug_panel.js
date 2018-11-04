@@ -53,6 +53,8 @@ export default class DebugPanel {
     replay(omitLast = false) {
         let replayList = replays[this.selectReplay.val()];
         let last = replayList.length - (omitLast ? 1 : 0);
+
+        this.controller.reset();
         for (let i = 0; i < last; i++) {
             this.controller.takeMove(replayList[i].player, replayList[i].pos);
         }

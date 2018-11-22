@@ -72,16 +72,12 @@ export class GameBoard {
         return nextTurnBoards;
     }
 
-    checkBigBoardWin(player) {
-        checkForWin(player, this.bigBoard)
+    checkForWin(player, boardPos = false, usingPosition = null) {
+        return checkForWin(player, boardPos ? this.grid[boardPos] :this.bigBoard, usingPosition)
     }
 
     boardsNotWon() {
         return _.keys(_.pickBy(this.bigBoard, _.negate(_.identity)))
-    }
-
-    getBig(pos) {
-        return this.bigBoard[pos];
     }
 }
 

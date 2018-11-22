@@ -1,5 +1,5 @@
 import 'lodash';
-import {GameBoard, positions, playerMarkers, checkForWin} from "./game_board";
+import {GameBoard, positions, playerMarkers} from "./game_board";
 
 const firstPlayer = playerMarkers[0];
 const ruleCanPlaceInResolved = false;
@@ -47,7 +47,7 @@ export default class GameModel {
         //  Evaluate whether the this action has ended the game
         //      Must be after evaluating individual board outcome
         let gameOutcome = null;
-        let gameWin = checkForWin(player, this.board.bigBoard);
+        let gameWin = this.board.checkForWin(player);
         if (gameWin) {
             gameOutcome = {
                 squares: gameWin,
@@ -87,6 +87,6 @@ export default class GameModel {
     }
 
     checkPotentialWin(player, bigPos, smallPos) {
-        return checkForWin(player, this.board.grid[bigPos], smallPos);
+        return this.board.checkForWin(player, bigPos, smallPos);
     }
 }

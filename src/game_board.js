@@ -19,8 +19,11 @@ const winningRows = [
     ['BL', 'CC', 'TR'],
 ];
 
+
 export class GameBoard {
-    constructor() {
+    constructor(ruleCanPlaceInResolved) {
+        this.ruleCanPlaceInResolved = ruleCanPlaceInResolved;
+
         // Map of positions -> maps of position -> undef.
         //  I guess this is the closest I'll ever get to a dict comprehension in js.
         //  Also, this is the only reason I can't use lodash/core.
@@ -48,12 +51,29 @@ export class GameBoard {
         return winPositions;
     }
 
-    checkBigBoardWin(player) {
-        checkForWin(player, this.bigBoard)
+    isFull(big) {
+        return positions.every(pos => this.grid[big][pos]);
     }
 
-    boardsWithSpace() {
-        return positions.filter(pos => _.size(_.pickBy(this.grid[pos])) !== _.size(this.grid[pos]));
+    nextMoveBoards(move) {
+        // Normally, allow only the board of the move position
+        let nextTurnBoards = [move];
+
+        // If the move was to a position with a full or resolved board, allow all boards with open space
+        if (this.bigBoard[move] || this.isFull(move)) {
+            // List boards with remaining spaces by filtering out big boards with number of filled spaces equal to size
+            nextTurnBoards = positions.filter(pos => _.size(_.pickBy(this.grid[pos])) !== positions.length);
+        }
+
+        if (!this.ruleCanPlaceInResolved) {
+            nextTurnBoards = nextTurnBoards.filter((board) => !this.bigBoard[board]);
+        }
+
+        return nextTurnBoards;
+    }
+
+    checkBigBoardWin(player) {
+        checkForWin(player, this.bigBoard)
     }
 
     boardsNotWon() {

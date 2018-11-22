@@ -7,7 +7,7 @@ const ruleCanPlaceInResolved = false;
 
 export default class GameModel {
     constructor() {
-        this.board = new GameBoard();
+        this.board = new GameBoard(ruleCanPlaceInResolved);
         this.nextTurnBoards = positions;
         this.atBat = firstPlayer;
     }
@@ -25,9 +25,6 @@ export default class GameModel {
 
         let smallWin = this.board.set(bigPos, smallPos, player);
 
-        // List boards with remaining spaces by filtering out big boards with number of filled spaces equal to size
-        let boardsWithSpace = this.board.boardsWithSpace();
-
         // Evaluate whether this action won the square
         if (smallWin) {
             boardWin = {
@@ -35,7 +32,8 @@ export default class GameModel {
                 squares: smallWin,
                 player: player
             };
-        } else if (!boardsWithSpace.includes(bigPos)) {
+        // } else if (!boardsWithSpace.includes(bigPos)) {
+        } else if (this.board.isFull(bigPos)) {
             // Board wasn't won but it is full
             boardWin = {
                 position: bigPos,
@@ -44,16 +42,7 @@ export default class GameModel {
         }
 
         this.atBat = playerMarkers[1 - playerMarkers.indexOf(player)];
-
-        if (this.board.getBig(smallPos) || !boardsWithSpace.includes(smallPos)) {
-            this.nextTurnBoards = boardsWithSpace;
-        } else {
-            this.nextTurnBoards = [smallPos];
-        }
-
-        if (!ruleCanPlaceInResolved) {
-            this.nextTurnBoards = this.nextTurnBoards.filter((board) => !this.board.getBig(board));
-        }
+        this.nextTurnBoards = this.board.nextMoveBoards(smallPos);
 
         //  Evaluate whether the this action has ended the game
         //      Must be after evaluating individual board outcome

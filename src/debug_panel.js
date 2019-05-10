@@ -6,6 +6,8 @@ import 'jquery-ui/themes/base/theme.css';
 import 'jquery-ui/themes/base/button.css';
 import 'jquery-ui/themes/base/selectmenu.css';
 import replays from './debug_replay';
+import {minimax} from './minimax_engine';
+import "lodash";
 
 
 export default class DebugPanel {
@@ -45,6 +47,9 @@ export default class DebugPanel {
             case 'go-1':
                 this.replay(true);
                 break;
+            case 'comp':
+                this.computer_player();
+                break;
             default:
                 throw new Error('TicTacToe debug call invalid: ' + callName);
         }
@@ -58,5 +63,15 @@ export default class DebugPanel {
         for (let i = 0; i < last; i++) {
             this.controller.takeMove(replayList[i].player, replayList[i].pos);
         }
+    }
+
+    computer_player() {
+        const positions = [
+            'TL', 'TC', 'TR',
+            'CL', 'CC', 'CR',
+            'BL', 'BC', 'BR',
+        ];
+        const gameBlank = positions.reduce((obj, key) => _.set(obj, key, {}), {});
+        console.log(minimax(gameBlank, 'X', 1));
     }
 }

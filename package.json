@@ -1,7 +1,7 @@
 {
 	"name": "pixi_template",
 	"version": "1.0.0",
-	"description": "test",
+	"description": "Self note: remember to use --experimental-modules --es-module-specifier-resolution=node",
 	"main": "index.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
@@ -27,5 +27,6 @@
 		"webpack-cli": "^3.3.2",
 		"webpack-dev-server": "^3.3.1"
 	},
+	"type": "module",
 	"repository": "github:Swarf/TicTacToe"
 }
